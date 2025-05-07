@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <form action="" method="post" id="expanse-form">
+        <label for="expanseAmount">Choose Expanse Amount</label>
+        <input type="number" name="" id="expanseAmount">
+        <label for="description">Choose description</label>
+        <input type="text" name="" id="description">
+        <label for="category">Choose a Category</label>
+        <select id="category">
+            <option value="Fuel">Fuel</option>
+            <option value="Electricity">Electricity</option>
+            <option value="Food">Food</option>
+            <option value="Movie">Movie</option>
+        </select>
+        <button type="submit" id="addExpanses">Add Expanses</button>
+    </form>
+    <div id="expanse-list">
+
+    </div>
+</body>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.5.1/axios.min.js"></script>
+<script src="expanse.js"></script>
+</html>
