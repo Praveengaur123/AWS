@@ -1,3 +1,4 @@
+const bcrypt=require('bcrypt')
 
 const singup=require('../model/signup')
 const path=require('path')
@@ -9,7 +10,8 @@ try {
     const name=req.body.name
     const email=req.body.email
     const password=req.body.password
-    const userDetail=await singup.create({name:name,email:email,password:password})
+    const hashedPassword= await bcrypt.hash(password,10)
+    const userDetail=await singup.create({name:name,email:email,password:hashedPassword})
     res.status(201).json({userDetail:userDetail})
 } catch (error) {
     console.log("sending failed")
