@@ -2,7 +2,7 @@ const Sequelize=require('sequelize')
 
 const sequelize=require('../util/database')
 
-console.log('creating table')
+
 const signup=sequelize.define('SignUp',{
     id:{
         type:Sequelize.INTEGER,

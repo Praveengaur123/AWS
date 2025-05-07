@@ -5,13 +5,16 @@ const path = require('path')
 
 
 const signupRouter=require('./route/signup')
-const app=express()
 
-app.use(bodyParser.urlencoded({extended:false}))
+const loginRouter=require('./route/login')
+const app=express()
 app.use(bodyParser.json())
+app.use(bodyParser.urlencoded({extended:false}))
+
 app.use(express.static(path.join(__dirname,'public')))
 
 app.use('/signup/',signupRouter)
+app.use('/login/',loginRouter)
 
 Sequelize.sync()
 .then(response=>{
