@@ -6,6 +6,6 @@ const router=express.Router()
 
 router.get('/',loginController.getLoginPage)
 
-router.post(`/:loginEmail`,loginController.Login)
+router.post('/',loginController.Login)
 
 module.exports=router

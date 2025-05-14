@@ -6,12 +6,15 @@ login.addEventListener('submit',(event)=>{
     const loginPassword=document.getElementById('loginPassword').value
     const obj={loginEmail,loginPassword}
     
-    axios.post(`http://localhost:5050/login/${loginEmail}`,obj)
+    axios.post(`http://localhost:5050/login/`,obj)
     .then(response=>{
-        
-        login.innerHTML=`<h1>${loginEmail} Logged In Successfully</h1>`
-        login.reset()
+        login.innerHTML+=`<h1>${loginEmail} Logged In Successfully</h1>`
         console.log(response)
+        localStorage.setItem('token',response.data.token)
+        window.location.href=response.data.redirectUrl
     })
-    .catch(err=>console.log(err))
+    .catch(err=>{
+        login.innerHTML+=`<h1>${loginEmail} Logged In unSuccessfull</h1>`
+        console.log(err)
+    })
 })

@@ -17,7 +17,7 @@ app.use(bodyParser.urlencoded({extended:false}))
 
 app.use(express.static(path.join(__dirname,'public')))
 
-app.use(expanseRouter)
+app.use('/',expanseRouter)
 app.use('/signup/',signupRouter)
 app.use('/login/',loginRouter)
 

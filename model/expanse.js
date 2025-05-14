@@ -6,7 +6,7 @@ const expanseTable=sequelize.define('expanse',{
     id:{
         type:Sequelize.INTEGER,
         autoIncrement:true,
-        nutNull:true,
+        notNull:true,
         primaryKey:true,
         unique:true
     },
