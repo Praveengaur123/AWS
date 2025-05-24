@@ -1,9 +1,10 @@
 const Sequelize=require('sequelize')
 
 console.log("connection established")
-const sequelize=new Sequelize('aws','root','Pra0@123',{
+const sequelize=new Sequelize('aws','root','',{
     dialect:'mysql',
-    host:'localhost'
+    host:'localhost',
+    logging:false
 })
 
 module.exports=sequelize

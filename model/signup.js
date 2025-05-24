@@ -3,7 +3,7 @@ const Sequelize=require('sequelize')
 const sequelize=require('../util/database')
 
 
-const signup=sequelize.define('SignUp',{
+const signup=sequelize.define('user',{
     id:{
         type:Sequelize.INTEGER,
         primaryKey:true,
@@ -23,6 +23,10 @@ const signup=sequelize.define('SignUp',{
     password:{
         type:Sequelize.STRING,
         notNull:true
+    },
+    premiumUser:{
+       type:Sequelize.BOOLEAN,
+       defaultValue:false 
     }
 
 })

@@ -2,6 +2,7 @@ const express=require('express')
 const bodyParser=require('body-parser')
 const Sequelize=require('./util/database')
 const path = require('path')
+const cors=require('cors')
 
 const {signupTable,expanseTable}=require('./model/association')
 
@@ -11,12 +12,16 @@ const loginRouter=require('./route/login')
 
 const expanseRouter=require('./route/expanse')
 
+const paymentRouter=require('./route/payment')
+
 const app=express()
+app.use(cors())
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({extended:false}))
 
 app.use(express.static(path.join(__dirname,'public')))
 
+app.use('/',paymentRouter)
 app.use('/',expanseRouter)
 app.use('/signup/',signupRouter)
 app.use('/login/',loginRouter)

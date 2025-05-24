@@ -6,10 +6,10 @@ exports.postExapanse=async(req,res)=>{
 const amount=req.body.expanseAmount
 const description=req.body.description
 const category=req.body.category
-console.log("userId",req.SignUp.id)
+console.log("userId",req.user.id)
 console.log("requesting data",req.body)
 try {
-    const data=await expanses.create({amount:amount,description:description,category:category,userId:req.SignUp.id})
+    const data=await expanses.create({amount:amount,description:description,category:category,userId:req.user.id})
     console.log(data)
     return res.status(201).json({newExpanse:data})
 
@@ -32,7 +32,7 @@ exports.deleteExpanse=async(req,res)=>{
     try {
         
     const id=req.params.id
-    const userId=req.SignUp.id
+    const userId=req.user.id
     console.log("user id while deleting",userId)
     const expanse=await expanses.findByPk(id)
     console.log("data to be deleted",expanse.userId)
@@ -50,3 +50,4 @@ exports.deleteExpanse=async(req,res)=>{
 exports.getExpansePage=(req,res)=>{
     res.sendFile(path.join(__dirname,'../views','expanse.html'))
 }
+
