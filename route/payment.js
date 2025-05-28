@@ -6,8 +6,8 @@ const paymentController=require('../controller/payment')
 
 const userAuthenticate=require('../middleware/auth')
 
-router.post('/pay',paymentController.processPayment)
+router.post('/pay',userAuthenticate.authenticate,paymentController.processPayment)
 
-router.get('/payment-status/:paymentSessionId',userAuthenticate.authenticate,paymentController.getPaymentStatus)
+router.get('/payment-status/:orderId',userAuthenticate.authenticate,paymentController.getPayStatus)
 
 module.exports=router

@@ -19,7 +19,7 @@ exports.Login=async(req,res)=>{
         }
     try {
         const user=await User.findOne({where:{email}})
-        console.log("here is the user",user)
+        
 
         if(!user){
             console.log("user not found")

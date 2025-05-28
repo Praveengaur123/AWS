@@ -4,7 +4,7 @@ const Sequelize=require('./util/database')
 const path = require('path')
 const cors=require('cors')
 
-const {signupTable,expanseTable}=require('./model/association')
+const {userTable,expanseTable,paymentTable}=require('./model/association')
 
 const signupRouter=require('./route/signup')
 
@@ -13,6 +13,8 @@ const loginRouter=require('./route/login')
 const expanseRouter=require('./route/expanse')
 
 const paymentRouter=require('./route/payment')
+
+const premiumRouter=require('./route/premiumUser')
 
 const app=express()
 app.use(cors())
@@ -25,8 +27,9 @@ app.use('/',paymentRouter)
 app.use('/',expanseRouter)
 app.use('/signup/',signupRouter)
 app.use('/login/',loginRouter)
+app.use(premiumRouter)
 
-Sequelize.sync()
+Sequelize.sync({})
 .then(response=>{
     
     app.listen(5050,()=>console.log("server starts @ localhost: 5050"))

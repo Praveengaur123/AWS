@@ -1,12 +1,21 @@
-const signupTable=require('./signup')
+const userTable=require('./signup')
 
 const expanseTable=require('./expanse')
 
+const paymentTable=require('../model/payment')
+
 // one to many
-signupTable.hasMany(expanseTable,{
+userTable.hasMany(expanseTable,{
     foreignKey:'userId'
 })
-expanseTable.belongsTo(signupTable,{
+expanseTable.belongsTo(userTable,{
     foreignKey:'userId'
 })
-module.exports={signupTable,expanseTable}
+
+userTable.hasMany(paymentTable,{
+    foreignKey:'userId'
+})
+paymentTable.belongsTo(userTable,{
+    foreignKey:'userId'
+})
+module.exports={userTable,expanseTable,paymentTable}

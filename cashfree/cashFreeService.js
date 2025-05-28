@@ -1,6 +1,6 @@
     const { Cashfree, CFEnvironment } = require("cashfree-pg");
 
-  const cashfree = new Cashfree(CFEnvironment.SANDBOX, "", "");
+  const cashfree = new Cashfree(CFEnvironment.SANDBOX, "TEST430329ae80e0f32e41a393d78b923034", "TESTaf195616268bd6202eeb3bf8dc458956e7192a85");
 
     exports.createOrder = async (
       orderId,
@@ -33,7 +33,6 @@
         };
 
         const response = await cashfree.PGCreateOrder(request);
-        console.log("response data",response)
         return response.data.payment_session_id;
       } catch (error) {
         console.error("Error creating order:", error.message);
@@ -44,11 +43,10 @@
       try {
         console.log()
         console.log()
-        console.log(orderId)
+        console.log("order id from cashfree",orderId)
         console.log()
         console.log()
-        const response = await cashfree.PGOrderFetchPayments("2023-08-01", orderId);
-
+        const response = await cashfree.PGOrderFetchPayments(orderId);
         let getOrderResponse = response.data;
         let orderStatus;
 
@@ -67,11 +65,10 @@
         } else {
           orderStatus = "Failure";
         }
-
+        console.log("orderStatus in cashfree",orderStatus)
         return orderStatus;
         
       } catch (error) {
         console.error("Error fetching order status:", error.message);
       }
     };
-

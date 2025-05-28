@@ -1,42 +1,60 @@
-const cashfree = Cashfree({
-                mode: "sandbox",
-});
 
-document.getElementById("renderBtn").addEventListener("click", async () => {
-  try {
-    // const token = localStorage.getItem('token');
-    const response = await fetch('http://localhost:5050/pay',{
-      method:"POST",
-    })
-    const data=await response.json()
-    const paymentSessionId=data.paymentSessionId
-    const orderId=data.orderId
+      const cashfree = Cashfree({
+        mode: "sandbox",
+      });
 
-    let checkoutOptions = {
-      paymentSessionId:paymentSessionId,
+    document.getElementById("renderBtn").addEventListener("click", async () => {
+      try {
+        
+        // Fetch payment session ID from backend
+        const token=localStorage.getItem('token')
+        const response = await fetch("http://localhost:5050/pay", {
+          method: "POST",
+          headers:{'Authorisation':token}
+        });
 
-      // modal payment options
-      redirectTarget: "_modal"
-    };
-    // start the checkout proccess
-    const result = await cashfree.checkout(checkoutOptions);
+        const data = await response.json();
+        console.log("data",data)
+        const paymentSessionId = data.paymentSessionId;
+        const orderId = data.orderId;
 
-    if (result.error) {
-      console.log("Payment error:", result.error);
-    } 
-    if(result.redirect){
-      console.log('payment will be redirected')
-    }
-    if (result.paymentDetails) {
-      console.log("payment has been comlpeted, check for payment status")
-      console.log(result.paymentDetails.paymentMessage)
-      const response = await fetch(`http://localhost:5050/payment-status/${orderId}`,{
-        method:"GET"
-      })
-      const data =await response.json()
-      alert("your payment is"+data.orderStatus)
-    }
-  } catch (err) {
-    console.error("Error: from frontend modal", err);
-  }
-});
+        // Initialize checkout options
+        let checkoutOptions = {
+            paymentSessionId: paymentSessionId,
+          
+          //? Modal payment options
+            redirectTarget: "_modal",
+        };
+
+        // Start the checkout process
+        const result = await cashfree.checkout(checkoutOptions);
+
+        if(result.error){
+            // This will be true whenever user clicks on close icon inside the modal or any error happens during the payment
+            console.log("User has closed the popup or there is some payment error, Check for Payment Status");
+            console.log(result.error);
+        }
+        if(result.redirect){
+            // This will be true when the payment redirection page couldn't be opened in the same window
+            // This is an exceptional case only when the page is opened inside an inAppBrowser
+            // In this case the customer will be redirected to return url once payment is completed
+            console.log("Payment will be redirected");
+        }
+        if(result.paymentDetails){
+            // This will be called whenever the payment is completed irrespective of transaction status
+            console.log("Payment has been completed, Check for Payment Status");
+            console.log(result.paymentDetails.paymentMessage);
+            const token=localStorage.getItem('token')
+            const response = await fetch(`http://localhost:5050/payment-status/${orderId}`, {
+              method: "GET",
+              headers:{'Authorisation':token}
+            });
+            const data = await response.json();
+            alert("Your payment is " + data.orderStatus)
+        }
+
+
+      } catch (err) {
+        console.log("Error:", err);
+      }
+    });

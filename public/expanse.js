@@ -1,7 +1,9 @@
 function showExpanses(e){
     const expanseList=document.getElementById('expanse-list')
     const expanseRow=document.createElement('div')
+    const premiumDiv=document.createElement('div')
     expanseList.appendChild(expanseRow).innerHTML+=`
+            
             <span>${e.amount}-${e.description}-${e.category}</span>
             <button type='submit' data-id='e.id' class='deleteBtn'>Delete Expanses</button>
             `;

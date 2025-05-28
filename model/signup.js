@@ -26,7 +26,7 @@ const signup=sequelize.define('user',{
     },
     premiumUser:{
        type:Sequelize.BOOLEAN,
-       defaultValue:false 
+       defaultValue:false
     }
 
 })

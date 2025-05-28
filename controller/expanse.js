@@ -6,11 +6,11 @@ exports.postExapanse=async(req,res)=>{
 const amount=req.body.expanseAmount
 const description=req.body.description
 const category=req.body.category
-console.log("userId",req.user.id)
-console.log("requesting data",req.body)
+
+
 try {
     const data=await expanses.create({amount:amount,description:description,category:category,userId:req.user.id})
-    console.log(data)
+
     return res.status(201).json({newExpanse:data})
 
 } catch (error) {
