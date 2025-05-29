@@ -11,6 +11,6 @@ router.get('/getExpanse',userAuthenticate.authenticate,expanseController.getExpa
 
 router.post('/postExpanse',userAuthenticate.authenticate,expanseController.postExapanse)
 
-router.delete(`/deleteExpanse/{:id}`,userAuthenticate.authenticate,expanseController.deleteExpanse)
+router.delete(`/deleteExpanse/:id`,userAuthenticate.authenticate,expanseController.deleteExpanse)
 
 module.exports=router

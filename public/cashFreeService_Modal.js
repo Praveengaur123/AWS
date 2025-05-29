@@ -51,6 +51,7 @@
             });
             const data = await response.json();
             alert("Your payment is " + data.orderStatus)
+            window.location.href=data.redirectUrl
         }
 
 

@@ -17,7 +17,7 @@ function showExpanses(e){
     expanseList.removeChild(expanseRow)
   })
   .catch((err)=>
-    console.log("Error in deleting",err))
+    console.log("Error in deleting",err.message))
 })
 
 }
@@ -56,7 +56,6 @@ axios.post('http://localhost:5050/postExpanse',expanseDetail,{headers:{'Authoris
     // console.log("response from backend",response.data)
     const newdata=response.data.newExpanse
             console.log("rte",newdata)
-            
             showExpanses(newdata)
             expanseForm.reset()
 })

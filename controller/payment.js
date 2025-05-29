@@ -67,9 +67,8 @@ exports.getPayStatus=async(req,res)=>{
             User.premiumUser=true;
             await User.save()
         }
-        else
 
-        res.json({orderStatus})
+        res.json({redirectUrl:'/expanse',orderStatus:orderStatus})
     }
     catch(err){
     console.error("Error fetching payment status:", err.message);

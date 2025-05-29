@@ -1,5 +1,6 @@
 const expanses= require('../model/expanse')
 const path=require('path')
+const User=require('../model/signup')
 
 // Post Expanses
 exports.postExapanse=async(req,res)=>{
@@ -10,7 +11,14 @@ const category=req.body.category
 
 try {
     const data=await expanses.create({amount:amount,description:description,category:category,userId:req.user.id})
-
+        const totalExpanses=Number(req.user.totalExpanses)+Number(amount)
+        console.log("total Expanse",totalExpanses)
+        User.update(
+            {totalExpanses:totalExpanses},
+            {
+                where:{id:req.user.id}
+            }
+        )
     return res.status(201).json({newExpanse:data})
 
 } catch (error) {
@@ -20,9 +28,14 @@ try {
 exports.getExpanse=async(req,res)=>{
     
     try {
-        const data=await expanses.findAll()
+        const userId=req.user.id
+        console.log("userId while getting expanses",userId)
+        const data=await expanses.findAll({where:{userId}},{
+            attributes:['id','amount','category','description']
+        });
         return res.status(200).json({AllExpanses:data})
     } catch (error) {
+        console.log("error while fetching expanses:",error.message)
         res.status(500).json({message:'Error while fetching expanses'})
     }
 }
@@ -30,7 +43,6 @@ exports.getExpanse=async(req,res)=>{
 // deleteing the data
 exports.deleteExpanse=async(req,res)=>{
     try {
-        
     const id=req.params.id
     const userId=req.user.id
     console.log("user id while deleting",userId)
@@ -42,6 +54,7 @@ exports.deleteExpanse=async(req,res)=>{
     return res.status(200).json({id:id})
 
     } catch (error) {
+        console.log("error while deleting ",error.message)
         return res.status(500).json({err:"Error in Deleting Expanse"})
     }
     

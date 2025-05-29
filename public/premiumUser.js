@@ -4,12 +4,14 @@ const premiumUser=document.getElementById('premiumUser')
 const leaderBoard=document.getElementById('leaderBoard')
 
 // function tp show leader
-function showLeader(l){
+function showLeader(l,i){
 const row=document.createElement('tr')
 
 row.innerHTML+=`
+<td>${i+1}</td>
+<td>=></td>
 <td>Name: ${l.name}</td>
-<td>Total Expanses: ${l.TotalExpanses}</td>`;
+<td>Total Expanses: ${l.totalExpanses}</td>`;
 leaderBoard.appendChild(row)
 
 }
@@ -19,7 +21,6 @@ leaderBoard.appendChild(row)
 function showUser(){
     const premiumSection=document.createElement('div')
     const leaderboard=document.createElement('button')
-    const leaderSection=document.createElement('div')
     leaderboard.id="leaderBoard-btn"
     leaderboard.textContent="View Leaderboard"
     premiumUser.innerHTML=`You are Now a Premium User`
@@ -31,7 +32,7 @@ function showUser(){
             leaderBoard.innerHTML=`<h2>Leader Board</h2>`
             const l=response.data.leaderboard
             for(let i=0;i<l.length;i++){
-                showLeader(l[i])
+                showLeader(l[i],i)
             }
         })
         .catch(err=>{

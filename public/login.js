@@ -9,7 +9,7 @@ login.addEventListener('submit',(event)=>{
     axios.post(`http://localhost:5050/login/`,obj)
     .then(response=>{
         login.innerHTML+=`<h1>${loginEmail} Logged In Successfully</h1>`
-        console.log(response)
+        console.log(response.data)
         localStorage.setItem('token',response.data.token)
         window.location.href=response.data.redirectUrl
     })
