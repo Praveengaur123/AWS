@@ -1,3 +1,26 @@
+// user name and sign out
+function logOut(){
+  const userLogged=localStorage.getItem('email')
+  const userLogdiv=document.getElementById('user-name')
+  const LogOutBtn=document.createElement('button')
+  LogOutBtn.id='logOut-btn';
+  LogOutBtn.textContent='Log Out'
+
+  userLogdiv.innerHTML=`<h3>User Logged In: ${userLogged}</h3>`
+  userLogdiv.appendChild(LogOutBtn)
+  LogOutBtn.addEventListener('click',()=>{
+    axios.get('http://localhost:5050/logOut')
+    .then(response=>{
+      
+      window.location.href=response.data.redirectUrl
+    })
+    .catch(err=>{
+      console.log("error in logout",err)
+    })
+  })
+}
+
+
 function showExpanses(e){
     const expanseList=document.getElementById('expanse-list')
     const expanseRow=document.createElement('div')
@@ -22,10 +45,13 @@ function showExpanses(e){
 
 }
 
-
+// page loaded 
 document.addEventListener('DOMContentLoaded',(event)=>{
 event.preventDefault()
 const token=localStorage.getItem('token')
+// calling logout function
+logOut();
+
 axios.get('http://localhost:5050/getExpanse',{headers:{'Authorisation':token}})
 .then(response=>{
     console.log("getting the data on page",response)
@@ -64,3 +90,4 @@ axios.post('http://localhost:5050/postExpanse',expanseDetail,{headers:{'Authoris
 })
 
 })
+

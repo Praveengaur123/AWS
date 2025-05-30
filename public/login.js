@@ -11,6 +11,7 @@ login.addEventListener('submit',(event)=>{
         login.innerHTML+=`<h1>${loginEmail} Logged In Successfully</h1>`
         console.log(response.data)
         localStorage.setItem('token',response.data.token)
+        localStorage.setItem('email',loginEmail)
         window.location.href=response.data.redirectUrl
     })
     .catch(err=>{

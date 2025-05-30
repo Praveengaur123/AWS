@@ -13,4 +13,6 @@ router.post('/postExpanse',userAuthenticate.authenticate,expanseController.postE
 
 router.delete(`/deleteExpanse/:id`,userAuthenticate.authenticate,expanseController.deleteExpanse)
 
+router.get('/logOut',expanseController.logOut)
+
 module.exports=router

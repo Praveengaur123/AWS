@@ -59,6 +59,16 @@ exports.deleteExpanse=async(req,res)=>{
     }
     
 }
+// logout the page and redirect tu login page
+exports.logOut=async(req,res)=>{
+    try {
+        return res.json({succces:true,redirectUrl:'/login'})
+    } catch (error) {
+        console.log("error in logout controller",error.message)
+        return res.status(500).json({error:error})
+    }
+    
+}
 // get Expanses Page
 exports.getExpansePage=(req,res)=>{
     res.sendFile(path.join(__dirname,'../views','expanse.html'))
