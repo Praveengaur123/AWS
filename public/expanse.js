@@ -11,7 +11,7 @@ function logOut(){
   LogOutBtn.addEventListener('click',()=>{
     axios.get('http://localhost:5050/logOut')
     .then(response=>{
-      
+      alert("Logged Out Succesfully")
       window.location.href=response.data.redirectUrl
     })
     .catch(err=>{
@@ -59,7 +59,7 @@ axios.get('http://localhost:5050/getExpanse',{headers:{'Authorisation':token}})
     for(let i=0;i<ex.length;i++){
       showExpanses(ex[i])
     }
-    
+
 })
 .catch(err=>console.log("error while getting",err))
 
@@ -90,4 +90,3 @@ axios.post('http://localhost:5050/postExpanse',expanseDetail,{headers:{'Authoris
 })
 
 })
-
