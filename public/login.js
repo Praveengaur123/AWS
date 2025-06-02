@@ -19,3 +19,15 @@ login.addEventListener('submit',(event)=>{
         console.log(err)
     })
 })
+document.getElementById('forgot-password-btn').addEventListener('click',(event)=>{
+    event.preventDefault()
+    axios.get('http://localhost:5050/forgot-password')
+    .then(response=>{
+        console.log(response)
+        window.location.href='/forgot-password'
+    })
+    .catch(err=>{
+        console.log("error in forgot password from frontned",err.message)
+        
+    })
+})

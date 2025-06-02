@@ -1,7 +1,7 @@
 const payment=require('../model/payment')
 const {
     createOrder,getPaymentStatus
-}=require('../cashfree/cashFreeService')
+}=require('../services/cashFreeService')
 
 
 const user=require('../model/signup')

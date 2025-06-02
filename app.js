@@ -16,18 +16,21 @@ const paymentRouter=require('./route/payment')
 
 const premiumRouter=require('./route/premiumUser')
 
+const forgotPasswordRouter=require('./route/forgot-password')
+
 const app=express()
 app.use(cors())
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({extended:false}))
 
 app.use(express.static(path.join(__dirname,'public')))
-
+// router
 app.use('/',paymentRouter)
 app.use('/',expanseRouter)
 app.use('/signup/',signupRouter)
 app.use('/login/',loginRouter)
 app.use(premiumRouter)
+app.use(forgotPasswordRouter)
 
 Sequelize.sync({})
 .then(response=>{
