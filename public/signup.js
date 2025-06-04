@@ -15,6 +15,7 @@ document.addEventListener('DOMContentLoaded',()=>{
         axios.post('http://localhost:5050/signup/user',data)
         .then(response=>{
             signup.reset()
+            alert(` Account Created Successfully `)
             console.log(response)
 
         })

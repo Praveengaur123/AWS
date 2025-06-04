@@ -2,7 +2,9 @@ const userTable=require('./signup')
 
 const expanseTable=require('./expanse')
 
-const paymentTable=require('../model/payment')
+const paymentTable=require('./payment')
+
+const forgotPasswordRequest=require('./forgotPasswordRequest')
 
 // one to many
 userTable.hasMany(expanseTable,{
@@ -18,4 +20,12 @@ userTable.hasMany(paymentTable,{
 paymentTable.belongsTo(userTable,{
     foreignKey:'userId'
 })
-module.exports={userTable,expanseTable,paymentTable}
+
+userTable.hasMany(forgotPasswordRequest,{
+    foreignKey:'userId'
+})
+forgotPasswordRequest.belongsTo(userTable,{
+    foreignKey:'userId'
+})
+
+module.exports={userTable,expanseTable,paymentTable,forgotPasswordRequest}
