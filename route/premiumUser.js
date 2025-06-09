@@ -10,4 +10,6 @@ router.get('/premiumUser',authorisation.authenticate,premiumUser.getPremiumUser)
 
 router.get('/leaderBoard',premiumUser.getLeaderBoard)
 
+router.get('/premiumUser/download',premiumUser.downloadReport)
+
 module.exports=router

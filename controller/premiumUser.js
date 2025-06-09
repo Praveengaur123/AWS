@@ -31,3 +31,7 @@ try {
     return res.json({error})
 }
 }
+
+exports.downloadReport=async(req,res)=>{
+    
+}

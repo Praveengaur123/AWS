@@ -2,8 +2,9 @@
 // html div to display
 const premiumUser=document.getElementById('premiumUser')
 const leaderBoard=document.getElementById('leaderBoard')
-
-// function tp show leader
+// token to fetch for verify
+const token=localStorage.getItem('token')
+// function to show leader
 function showLeader(l,i){
 const row=document.createElement('tr')
 
@@ -16,10 +17,10 @@ leaderBoard.appendChild(row)
 
 }
 
-
 // function to display the leaderboard
 function showUser(){
     const premiumSection=document.createElement('div')
+    //    leaderBoard Button
     const leaderboard=document.createElement('button')
     leaderboard.id="leaderBoard-btn"
     leaderboard.textContent="View Leaderboard"
@@ -47,7 +48,6 @@ function showUser(){
 document.addEventListener('DOMContentLoaded',(event)=>{
 event.preventDefault()
 
-const token=localStorage.getItem('token')
 console.log("premium user data to fetch")
 // url to know the premium user
 axios.get('http://localhost:5050/premiumUser',{headers:{'Authorisation':token}})
@@ -55,6 +55,8 @@ axios.get('http://localhost:5050/premiumUser',{headers:{'Authorisation':token}})
     const premium=response.data.pUser
     if(premium.premiumUser==true){
         showUser()
+        downloadReport()
+        expanses()
     }
     else{
         premiumUser.innerHTML=`<h4>You are not Premium User</h4>`
@@ -64,3 +66,27 @@ axios.get('http://localhost:5050/premiumUser',{headers:{'Authorisation':token}})
     console.log("error from premium backend",err.message)
 })
 })
+function  downloadReport(){
+// download report
+const downloadBtn=document.createElement('button')
+downloadBtn.textContent="Download Your Expanses"
+premiumUser.appendChild(downloadBtn);
+downloadBtn.addEventListener('click',(event)=>{
+    event.preventDefault()
+    axios.get('http://localhost:5050/premiumUser/download',{headers:{'Authorisation':token}})
+    .then(response=>{
+        const a=document.createElement('a')
+        a.href=response.data.fileUrl
+        a.download="myExpanse.csv";
+    })
+    .catch(err=>{
+        console.log("Error while downloading",err)
+    })
+})
+}
+// day, weekly and monthly expanses
+function expanses(){
+    const expansesBtn=document.createElement('button')
+    expansesBtn.textContent=''
+    
+}
