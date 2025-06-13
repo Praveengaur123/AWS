@@ -1,3 +1,5 @@
+
+
 // user name and sign out
 function logOut(){
   const userLogged=localStorage.getItem('email')
@@ -24,7 +26,6 @@ function logOut(){
 function showExpanses(e){
     const expanseList=document.getElementById('expanse-list')
     const expanseRow=document.createElement('div')
-    const premiumDiv=document.createElement('div')
     expanseList.appendChild(expanseRow).innerHTML+=`
             
             <span>${e.amount}-${e.description}-${e.category}</span>
@@ -51,18 +52,18 @@ event.preventDefault()
 const token=localStorage.getItem('token')
 // calling logout function
 logOut();
-
-axios.get('http://localhost:5050/getExpanse',{headers:{'Authorisation':token}})
+const page=1;
+axios.get(`http://localhost:5050/getExpanse?page=${page}`,{headers:{'Authorisation':token}})
 .then(response=>{
     console.log("getting the data on page",response)
     const ex=response.data.AllExpanses
-    for(let i=0;i<ex.length;i++){
-      showExpanses(ex[i])
-    }
-
+    const expList = document.getElementById('expanse-list');
+    expList.innerHTML = ''; // clear previous entries
+    ex.forEach(exp=>showExpanses(exp));
+    
+    showPagination(response.data);
 })
 .catch(err=>console.log("error while getting",err))
-
 
 // functionality for expanse form post request
 const expanseForm=document.getElementById('expanse-form')
@@ -90,3 +91,60 @@ axios.post('http://localhost:5050/postExpanse',expanseDetail,{headers:{'Authoris
 })
 
 })
+const pagination=document.getElementById('pagination')
+// render pagination button
+function showPagination({
+  currentPage,
+  hasNextPage,
+  nextPage,
+  hasPreviousPage,
+  previousPage,
+  lastPage
+}){
+  pagination.innerHTML=''
+  if(hasPreviousPage){
+    const btn2=document.createElement('button')
+    btn2.innerHTML=previousPage
+    btn2.addEventListener('click',()=>getExpanse(previousPage))
+    pagination.appendChild(btn2)
+  }
+  const btn1=document.createElement('button')
+  btn1.innerHTML=`${currentPage}`
+  btn1.addEventListener('click',()=>{
+    getExpanse(currentPage)
+  })
+  pagination.appendChild(btn1)
+  if(hasNextPage){
+    const btn3=document.createElement('button')
+    btn3.innerHTML=nextPage
+    btn3.addEventListener('click',()=>getExpanse(nextPage))
+    pagination.appendChild(btn3)
+  }
+  const btn4=document.createElement('button')
+  btn4.innerHTML=lastPage
+  btn4.addEventListener('click',()=>{
+    getExpanse(lastPage)
+  
+})
+pagination.appendChild(btn4)
+  
+}
+
+function getExpanse(page){
+  const token = localStorage.getItem('token');
+  axios.get(`http://localhost:5050/getExpanse?page=${page}`,{headers:{'Authorisation':token}})
+  .then(response=>{
+    console.log("getting the data on page",response)
+
+    const ex=response.data.AllExpanses
+    const expList = document.getElementById('expanse-list');
+    expList.innerHTML = ''; // Clear old data
+    // render new expanses
+    ex.forEach(exp => showExpanses(exp));
+    showPagination(response.data);
+    if(response.data.lastPage) {
+      
+    }
+  })
+  .catch(err=>console.log("error in pagination while getting products",err.message))
+}

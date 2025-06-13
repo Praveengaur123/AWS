@@ -1,12 +1,12 @@
 
 const users=require('../model/signup')
 
-console.log('premium controller')
+// console.log('premium controller')
 // to know the premium user 
 exports.getPremiumUser=async(req,res)=>{
     const id=req.user.id
     if(!id) console.log('id missing');
-    console.log("id in premium controller",id)
+    // console.log("id in premium controller",id)
     try {
         const pUser=await users.findOne({where:{id}})
         // console.log("Premium User data:",pUser)

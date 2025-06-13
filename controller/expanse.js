@@ -33,12 +33,32 @@ try {
 exports.getExpanse=async(req,res)=>{
     
     try {
+        const page=parseInt(req.query.page)||1  // current page number 
+        const limit=3 // items per page
+        const offset=(page-1)*limit
         const userId=req.user.id
+
+        // get total count
+        const totalCount= await expanses.count({where:{userId}})
+
         console.log("userId while getting expanses",userId)
-        const data=await expanses.findAll({where:{userId}},{
-            attributes:['id','amount','category','description']
+        const data=await expanses.findAll({
+            where:{userId},
+            attributes:['id','amount','category','description'],
+            limit:limit,
+            offset:offset,
+            order:[['createdAt','DESC']] // latest first
+
         });
-        return res.status(200).json({AllExpanses:data})
+        return res.status(200).json({
+            currentPage:page,
+            hasNextPage:limit*page<totalCount,
+            nextPage:(page+1),
+            hasPreviousPage:page>1,
+            previousPage:page-1,
+            totalPages:Math.ceil(totalCount/limit),
+            lastPage:Math.ceil(totalCount/limit),
+            AllExpanses:data})
     } catch (error) {
         console.log("error while fetching expanses:",error.message)
         res.status(500).json({message:'Error while fetching expanses'})
