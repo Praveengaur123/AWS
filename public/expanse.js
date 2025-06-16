@@ -23,9 +23,10 @@ function logOut(){
 }
 
 
-function showExpanses(e){
+function showExpanses(e,page){
     const expanseList=document.getElementById('expanse-list')
     const expanseRow=document.createElement('div')
+    expanseRow.classList='expanse-item'
     expanseList.appendChild(expanseRow).innerHTML+=`
             
             <span>${e.amount}-${e.description}-${e.category}</span>
@@ -39,6 +40,11 @@ function showExpanses(e){
   .then(response=>{
     console.log("deleted",response)
     expanseList.removeChild(expanseRow)
+    const expanseCount=document.querySelectorAll('.expanse-item').length
+    if(expanseCount==0) {
+    page=page-1
+  };
+    getExpanse(page)
   })
   .catch((err)=>
     console.log("Error in deleting",err.message))
@@ -49,23 +55,21 @@ function showExpanses(e){
 // page loaded 
 document.addEventListener('DOMContentLoaded',(event)=>{
 event.preventDefault()
-const token=localStorage.getItem('token')
 // calling logout function
 logOut();
 const page=1;
-axios.get(`http://localhost:5050/getExpanse?page=${page}`,{headers:{'Authorisation':token}})
-.then(response=>{
-    console.log("getting the data on page",response)
-    const ex=response.data.AllExpanses
-    const expList = document.getElementById('expanse-list');
-    expList.innerHTML = ''; // clear previous entries
-    ex.forEach(exp=>showExpanses(exp));
-    
-    showPagination(response.data);
-})
-.catch(err=>console.log("error while getting",err))
+const limitDropdown=document.getElementById('dynamicPagination')
+const limit=limitDropdown.value
+console.log("value for Dynamic Page",limit)
+getExpanse(page,limit)
+limitDropdown.addEventListener('change',()=>{
+  const limit=limitDropdown.value
+  getExpanse(page,limit)
 
-// functionality for expanse form post request
+})
+
+
+// post request functionality for expanse form post request
 const expanseForm=document.getElementById('expanse-form')
 expanseForm.addEventListener('submit',(event)=>{
 event.preventDefault()
@@ -85,6 +89,7 @@ axios.post('http://localhost:5050/postExpanse',expanseDetail,{headers:{'Authoris
             console.log("rte",newdata)
             showExpanses(newdata)
             expanseForm.reset()
+            getExpanse(page)
 })
 .catch(err=>console.log("error from backend",err))
 
@@ -99,40 +104,45 @@ function showPagination({
   nextPage,
   hasPreviousPage,
   previousPage,
-  lastPage
+  lastPage,
+  limit
 }){
   pagination.innerHTML=''
   if(hasPreviousPage){
     const btn2=document.createElement('button')
     btn2.innerHTML=previousPage
-    btn2.addEventListener('click',()=>getExpanse(previousPage))
+    btn2.addEventListener('click',()=>getExpanse(previousPage,limit))
     pagination.appendChild(btn2)
   }
   const btn1=document.createElement('button')
   btn1.innerHTML=`${currentPage}`
   btn1.addEventListener('click',()=>{
-    getExpanse(currentPage)
+    getExpanse(currentPage,limit)
   })
   pagination.appendChild(btn1)
   if(hasNextPage){
     const btn3=document.createElement('button')
     btn3.innerHTML=nextPage
-    btn3.addEventListener('click',()=>getExpanse(nextPage))
+    btn3.addEventListener('click',()=>getExpanse(nextPage,limit))
     pagination.appendChild(btn3)
   }
-  const btn4=document.createElement('button')
-  btn4.innerHTML=lastPage
-  btn4.addEventListener('click',()=>{
-    getExpanse(lastPage)
-  
-})
-pagination.appendChild(btn4)
+//   if(hasNextPage || lastPage){
+//   const btn4=document.createElement('button')
+//   btn4.innerHTML=lastPage
+//   btn4.addEventListener('click',()=>{
+//     getExpanse(lastPage)
+// })
+// pagination.appendChild(btn4)
+//   }
   
 }
 
 function getExpanse(page){
+  const limitDropdown=document.getElementById('dynamicPagination')
+  const limit=limitDropdown.value
   const token = localStorage.getItem('token');
-  axios.get(`http://localhost:5050/getExpanse?page=${page}`,{headers:{'Authorisation':token}})
+
+  axios.get(`http://localhost:5050/getExpanse?page=${page}&limit=${limit}`,{headers:{'Authorisation':token}})
   .then(response=>{
     console.log("getting the data on page",response)
 
@@ -140,11 +150,8 @@ function getExpanse(page){
     const expList = document.getElementById('expanse-list');
     expList.innerHTML = ''; // Clear old data
     // render new expanses
-    ex.forEach(exp => showExpanses(exp));
+    ex.forEach(exp => showExpanses(exp,page));
     showPagination(response.data);
-    if(response.data.lastPage) {
-      
-    }
   })
   .catch(err=>console.log("error in pagination while getting products",err.message))
 }

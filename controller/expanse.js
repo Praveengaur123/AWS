@@ -34,7 +34,8 @@ exports.getExpanse=async(req,res)=>{
     
     try {
         const page=parseInt(req.query.page)||1  // current page number 
-        const limit=3 // items per page
+        const limit=parseInt(req.query.limit) // limit set dynamically
+        console.log("limit for page",limit)
         const offset=(page-1)*limit
         const userId=req.user.id
 
@@ -54,6 +55,7 @@ exports.getExpanse=async(req,res)=>{
             currentPage:page,
             hasNextPage:limit*page<totalCount,
             nextPage:(page+1),
+            limit:limit,
             hasPreviousPage:page>1,
             previousPage:page-1,
             totalPages:Math.ceil(totalCount/limit),
