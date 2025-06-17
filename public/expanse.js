@@ -29,7 +29,7 @@ function showExpanses(e,page){
     expanseRow.classList='expanse-item'
     expanseList.appendChild(expanseRow).innerHTML+=`
             
-            <span>${e.amount}-${e.description}-${e.category}</span>
+            <span>${e.amount}-${e.description}-${e.category}-${e.notes}</span>
             <button type='submit' data-id='e.id' class='deleteBtn'>Delete Expanses</button>
             `;
 
@@ -78,10 +78,11 @@ const expanseDetail={
   expanseAmount:event.target.expanseAmount.value,
   description:event.target.description.value,
   category:event.target.category.value,
+  notes:event.target.notes.value,
   userId:1
 }
 const token=localStorage.getItem('token')
-console.log(token)
+console.log(expanseDetail)
 axios.post('http://localhost:5050/postExpanse',expanseDetail,{headers:{'Authorisation':token}})
 .then((response)=>{
     // console.log("response from backend",response.data)

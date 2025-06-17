@@ -7,11 +7,12 @@ exports.postExapanse=async(req,res)=>{
 const amount=req.body.expanseAmount
 const description=req.body.description
 const category=req.body.category
+const notes=req.body.notes
 
 
 try {
     const t=await sequelize.transaction()
-    const data=await expanses.create({amount:amount,description:description,category:category,userId:req.user.id},
+    const data=await expanses.create({amount:amount,description:description,category:category,notes:notes,userId:req.user.id},
         {transaction:t})
         const totalExpanses=Number(req.user.totalExpanses)+Number(amount)
         console.log("total Expanse",totalExpanses)
@@ -45,7 +46,7 @@ exports.getExpanse=async(req,res)=>{
         console.log("userId while getting expanses",userId)
         const data=await expanses.findAll({
             where:{userId},
-            attributes:['id','amount','category','description'],
+            attributes:['id','amount','category','description','notes'],
             limit:limit,
             offset:offset,
             order:[['createdAt','DESC']] // latest first

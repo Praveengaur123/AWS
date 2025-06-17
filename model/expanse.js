@@ -21,6 +21,10 @@ const expanseTable=sequelize.define('expanse',{
     category:{
         type:Sequelize.STRING,
         notNull:true
+    },
+    notes:{
+        type:Sequelize.STRING,
+        defaultValue:""
     }
 })
 module.exports=expanseTable

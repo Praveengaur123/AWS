@@ -1,6 +1,6 @@
     const { Cashfree, CFEnvironment } = require("cashfree-pg");
 
-  const cashfree = new Cashfree(CFEnvironment.SANDBOX, "", "");
+  const cashfree = new Cashfree(CFEnvironment.SANDBOX, process.env.CashFreeAppId, process.env.CashFreeSecreyKey);
 
     exports.createOrder = async (
       orderId,
@@ -14,7 +14,7 @@
         const expiryDate = new Date(Date.now() + 60 * 60 * 1000); // 1 hour from now
         const formattedExpiryDate = expiryDate.toISOString();
 
-        const request = {
+          const request = {
           order_amount: orderAmount,
           order_currency: orderCurrency,
           order_id: orderId,
