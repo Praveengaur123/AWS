@@ -6,7 +6,7 @@ const jwt=require('jsonwebtoken')
 
 // generating token
 function generatingToken(id){
-    return jwt.sign({userId:id},'hnei379485bjinci3yuhf657489tyhfytie937457937hfurh')
+    return jwt.sign({userId:id},process.env.jwtSecret)
 }
 
 exports.Login=async(req,res)=>{

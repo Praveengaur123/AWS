@@ -1,9 +1,11 @@
 require('dotenv').config();
 const express=require('express')
 const bodyParser=require('body-parser')
+const fs=require('fs')
 const Sequelize=require('./util/database')
 const path = require('path')
 const cors=require('cors')
+const https=require('https')
 
 const {userTable,expanseTable,paymentTable}=require('./model/association')
 
@@ -19,10 +21,16 @@ const premiumRouter=require('./route/premiumUser')
 
 const forgotPasswordRouter=require('./route/forgot-password')
 
+const privateKey=fs.readFileSync('server.key')
+const certificate=fs.readFileSync('server.cert')
+
 const app=express()
 app.use(cors())
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({extended:false}))
+
+
+app.use('/exports', express.static(path.join(__dirname, 'exports')));
 
 app.use(express.static(path.join(__dirname,'public')))
 // router
@@ -36,6 +44,7 @@ app.use(forgotPasswordRouter)
 Sequelize.sync({})
 .then(response=>{
     
-    app.listen(5050,()=>console.log("server starts @ localhost: 5050"))
+    // https.createServer({key:privateKey,cert:certificate},app)
+    app.listen(process.env.PORT||5050,()=>console.log("server starts @ localhost: 5050"))
 })
 .catch(err=>console.log(err))

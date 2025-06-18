@@ -1,5 +1,4 @@
 
-
 // token to fetch for verification
 const token=localStorage.getItem('token')
 // html div to display
@@ -84,11 +83,19 @@ axios.get('http://localhost:5050/premiumUser',{headers:{'Authorisation':token}})
 })
 // download report
 function  downloadReport(){
- axios.get('http://localhost:5050/premiumUser/download',{headers:{'Authorisation':token}})
+ axios.get('http://localhost:5050/premiumUser/download',{
+    headers:{'Authorisation':token},
+    responseType:'blob'
+})
     .then(response=>{
+        console.log(response)
+        const url = window.URL.createObjectURL(new Blob([response.data]));
         const a=document.createElement('a')
-        a.href=response.data.fileUrl
+        a.href=url
         a.download="myExpanse.csv";
+        document.body.appendChild(a);
+        a.click()
+        a.remove()
     })
     .catch(err=>{
         console.log("Error while downloading",err)
@@ -101,11 +108,9 @@ function expanses(){
         .then(response=>{
             const expanseData=response.data.AllExpanses
             console.log("expanse Data",expanseData)
-
             for(let i=0;i<5;i++){
             expanseList(expanseData[i])
             }
-            
         })
         .catch(err=>{
             console.log("error while generating table",err)

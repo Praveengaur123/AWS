@@ -36,7 +36,7 @@ exports.getExpanse=async(req,res)=>{
     try {
         const page=parseInt(req.query.page)||1  // current page number 
         const limit=parseInt(req.query.limit) // limit set dynamically
-        console.log("limit for page",limit)
+        // console.log("limit for page",limit)
         const offset=(page-1)*limit
         const userId=req.user.id
 
