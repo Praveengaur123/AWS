@@ -18,14 +18,7 @@ function showUser(){
     leaderboard.addEventListener('click',()=>{
         showLeader()
     })
-    //  download csv file button
-    const downloadBtn=document.createElement('button')
-    downloadBtn.textContent="Download Your Expanses"
-    premiumUser.appendChild(downloadBtn);
-    downloadBtn.addEventListener('click',(event)=>{
-    event.preventDefault()
-    downloadReport()
-})
+    
 // view detailed expanses
     const detailExpansesBtn=document.createElement('button')
     detailExpansesBtn.textContent='Detailed Expanse'
@@ -74,34 +67,13 @@ axios.get('http://localhost:5050/premiumUser',{headers:{'Authorisation':token}})
         showUser()
     }
     else{
-        premiumUser.innerHTML=`<h4>You are not Premium User</h4>`
+        premiumUser.innerHTML=`<h4 style="color:springgreen;">You are not Premium User</h4>`
     }
 })
 .catch(err=>{
     console.log("error from premium backend",err.message)
 })
 })
-// download report
-function  downloadReport(){
- axios.get('http://localhost:5050/premiumUser/download',{
-    headers:{'Authorisation':token},
-    responseType:'blob'
-})
-    .then(response=>{
-        console.log(response)
-        const url = window.URL.createObjectURL(new Blob([response.data]));
-        const a=document.createElement('a')
-        a.href=url
-        a.download="myExpanse.csv";
-        document.body.appendChild(a);
-        a.click()
-        a.remove()
-    })
-    .catch(err=>{
-        console.log("Error while downloading",err)
-    })
-
-}
 // day, weekly and monthly expanses
 function expanses(){
         axios.get('http://localhost:5050/getExpanse',{headers:{'Authorisation':token}})

@@ -12,4 +12,5 @@ router.get('/leaderBoard',premiumUser.getLeaderBoard)
 
 router.get('/premiumUser/download',authorisation.authenticate,premiumUser.downloadReport)
 
+
 module.exports=router

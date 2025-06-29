@@ -113,3 +113,62 @@ exports.getExpansePage=(req,res)=>{
     res.sendFile(path.join(__dirname,'../views','expanse.html'))
 }
 
+// download report
+const AWS=require('aws-sdk')
+
+exports.downloadReport=async(req,res)=>{
+try {
+    const userId=req.user.id
+    const expenseReport= await expanses.findAll({where:{userId}})
+    const premiumUser= await User.findOne(
+        {where:{id:userId},
+        attributes:['premiumUser']
+    })
+    console.log("premum user or Not",premiumUser.premiumUser)
+    if(premiumUser.premiumUser==true) {
+        console.log("Premium User")
+        const stringifiedExpanse=JSON.stringify(expenseReport)
+        // console.log("expanse report",stringifiedExpanse)
+        const fileName= `expanse_${userId}_${Date.now()}.csv`
+        const fileUrl= await uploadToS3(stringifiedExpanse,fileName)
+
+        res.status(200).json({fileUrl,success:true})
+    }
+    else{
+        console.log("Bad Request")
+        return res.status(401).json({message:"Unauthorized"})
+    }
+} catch (error) {
+    console.log("while downloading",error.message)
+    res.status(500).json({fileUrl:'',success:false,error:error})
+}
+}
+function uploadToS3(data,fileName){
+    const BUCKET_NAME=process.env.BUCKET_NAME
+    const IAM_USER_KEY=process.env.IAM_USER_KEY
+    const IAM_USER_SECRET=process.env.IAM_USER_SECRET_KEY
+
+    let s3bucket= new AWS.S3({
+        accessKeyId:IAM_USER_KEY,
+        secretAccessKey:IAM_USER_SECRET,
+    })
+    // console.log("S3",s3bucket)
+    var params={
+        Bucket:BUCKET_NAME,
+        Key:fileName,
+        Body:data,
+        ACL:'public-read'
+    }
+    return new Promise((resolve,reject)=>{
+        s3bucket.upload(params,(err,s3response)=>{
+        if(err){
+            console.log("something went wrong",err.message)
+            reject(err)
+        }
+        else{
+            // console.log("success",s3response)
+            resolve(s3response.Location)
+        }
+    })
+    })
+}

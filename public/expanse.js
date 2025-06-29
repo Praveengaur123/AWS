@@ -1,3 +1,30 @@
+  //  download csv file button functionality
+document.getElementById('downloadBtn').addEventListener('click',(event)=>{
+    event.preventDefault() 
+    console.log("Download Button Active")
+    axios.get('http://localhost:5050/download',{
+    headers:{'Authorisation':token},
+    // responseType:'blob'
+})
+    .then(response=>{
+        console.log(response)
+        if(response.status===200){
+        // const url = window.URL.createObjectURL(new Blob([response.data]));
+        const a=document.createElement('a')
+        a.href=response.data.fileUrl
+        a.download="myExpanse.csv";
+        // document.body.appendChild(a);
+        a.click()
+        a.remove()
+      }
+      if(response.status===401){
+        console.log("Unauthorised")
+      }
+    })
+    .catch(err=>{
+        console.log("Error while downloading",err)
+    })
+})
 
 
 // user name and sign out
@@ -32,7 +59,7 @@ function showExpanses(e,page){
             <span>${e.amount}-${e.description}-${e.category}-${e.notes}</span>
             <button type='submit' data-id='e.id' class='deleteBtn'>Delete Expanses</button>
             `;
-
+            
 // delete functionality
   expanseRow.querySelector('.deleteBtn').addEventListener('click',()=>{
   const token=localStorage.getItem('token')
@@ -67,7 +94,6 @@ limitDropdown.addEventListener('change',()=>{
   getExpanse(page,limit)
 
 })
-
 
 // post request functionality for expanse form post request
 const expanseForm=document.getElementById('expanse-form')
@@ -148,8 +174,12 @@ function getExpanse(page){
     console.log("getting the data on page",response)
 
     const ex=response.data.AllExpanses
+    
     const expList = document.getElementById('expanse-list');
     expList.innerHTML = ''; // Clear old data
+    if(ex.length==0){
+      expList.innerHTML = `<h5 style="color:firebrick;"> No Expenses Added Yet</h5>`
+    }
     // render new expanses
     ex.forEach(exp => showExpanses(exp,page));
     showPagination(response.data);

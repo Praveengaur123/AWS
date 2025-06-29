@@ -36,7 +36,6 @@ try {
 
 exports.downloadReport=async(req,res)=>{
     try {
-        
         const userId=req.user.id
         console.log("userId",userId)
         // get expanse from DB

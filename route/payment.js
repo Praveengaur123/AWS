@@ -10,4 +10,6 @@ router.post('/pay',userAuthenticate.authenticate,paymentController.processPaymen
 
 router.get('/payment-status/:orderId',userAuthenticate.authenticate,paymentController.getPayStatus)
 
+
+
 module.exports=router

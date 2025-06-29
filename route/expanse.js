@@ -11,6 +11,8 @@ router.get('/getExpanse',userAuthenticate.authenticate,expanseController.getExpa
 
 router.post('/postExpanse',userAuthenticate.authenticate,expanseController.postExapanse)
 
+router.get('/download',userAuthenticate.authenticate,expanseController.downloadReport)
+
 router.delete(`/deleteExpanse/:id`,userAuthenticate.authenticate,expanseController.deleteExpanse)
 
 router.get('/logOut',expanseController.logOut)
