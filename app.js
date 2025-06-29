@@ -21,8 +21,8 @@ const premiumRouter=require('./route/premiumUser')
 
 const forgotPasswordRouter=require('./route/forgot-password')
 
-const privateKey=fs.readFileSync('server.key')
-const certificate=fs.readFileSync('server.cert')
+// const privateKey=fs.readFileSync('server.key')
+// const certificate=fs.readFileSync('server.cert')
 
 const app=express()
 app.use(cors())
@@ -45,6 +45,6 @@ Sequelize.sync({})
 .then(response=>{
     
     // https.createServer({key:privateKey,cert:certificate},app)
-    app.listen(process.env.PORT||5050,()=>console.log("server starts @ localhost: 5050"))
+    app.listen(process.env.PORT||5050,()=>console.log(`server starts @ localhost: ${process.env.PORT}`))
 })
 .catch(err=>console.log(err))
