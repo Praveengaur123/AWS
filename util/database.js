@@ -10,5 +10,5 @@ const sequelize=new Sequelize(DB_NAME,DB_USER,password,{
     host:process.env.RDS_ENDPOINT,
     logging:false
 })
-
+ 
 module.exports=sequelize
