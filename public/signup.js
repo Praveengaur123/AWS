@@ -1,4 +1,4 @@
-var baseUrl="http://13.200.229.116/";
+var baseUrl="http://13.200.229.116";
 
 document.addEventListener('DOMContentLoaded',()=>{
     event.preventDefault()
