@@ -1,4 +1,5 @@
 // Log In functionality
+var baseUrl="http://13.200.229.116";
 const login=document.getElementById('login')
 login.addEventListener('submit',(event)=>{
     event.preventDefault()
