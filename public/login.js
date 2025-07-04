@@ -6,7 +6,7 @@ login.addEventListener('submit',(event)=>{
     const loginPassword=document.getElementById('loginPassword').value
     const obj={loginEmail,loginPassword}
     
-    axios.post(`http://localhost:5050/login/`,obj)
+    axios.post(`${baseUrl}/login/`,obj)
     .then(response=>{
         login.innerHTML+=`<h1>${loginEmail} Logged In Successfully</h1>`
         console.log(response.data)
@@ -21,7 +21,7 @@ login.addEventListener('submit',(event)=>{
 })
 document.getElementById('forgot-password-btn').addEventListener('click',(event)=>{
     event.preventDefault()
-    axios.get('http://localhost:5050/forgot-password')
+    axios.get(`${baseUrl}/forgot-password`)
     .then(response=>{
         console.log(response)
         window.location.href='/forgot-password'
