@@ -1,3 +1,4 @@
+var baseUrl="http://13.200.229.116/";
 
 document.addEventListener('DOMContentLoaded',()=>{
     event.preventDefault()
@@ -12,7 +13,7 @@ document.addEventListener('DOMContentLoaded',()=>{
 
         const data={name,email,password}
         
-        axios.post('http://localhost:5050/signup/user',data)
+        axios.post(`${baseUrl}/signup/user`,data)
         .then(response=>{
             signup.reset()
             alert(` Account Created Successfully `)
