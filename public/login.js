@@ -1,5 +1,5 @@
 // Log In functionality
-const BaseUrl="http://15.206.163.80";
+const BaseUrl="http://13.235.75.213";
 const login=document.getElementById('login')
 login.addEventListener('submit',(event)=>{
     event.preventDefault()
