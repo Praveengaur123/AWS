@@ -1,10 +1,11 @@
+const BaseUrl="http://15.206.163.80"
 const cashfree = Cashfree({
                 mode: "sandbox",
 });
 document.getElementById("renderBtn").addEventListener("click", async() => {
     try{
         // fetch payment Session id from backend
-        const response = await fetch("http://localhost:5050/pay", {
+        const response = await fetch(`${BaseUrl}/pay`, {
         method: "POST",
         });
         const data=await response.json()

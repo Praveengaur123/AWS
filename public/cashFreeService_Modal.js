@@ -1,4 +1,4 @@
-
+const BaseUrl="http://15.206.163.80"
       const cashfree = Cashfree({
         mode: "sandbox",
       });
@@ -8,7 +8,7 @@
         
         // Fetch payment session ID from backend
         const token=localStorage.getItem('token')
-        const response = await fetch("http://localhost:5050/pay", {
+        const response = await fetch(`${BaseUrl}/pay`, {
           method: "POST",
           headers:{'Authorisation':token}
         });
@@ -45,7 +45,7 @@
             console.log("Payment has been completed, Check for Payment Status");
             console.log(result.paymentDetails.paymentMessage);
             const token=localStorage.getItem('token')
-            const response = await fetch(`http://localhost:5050/payment-status/${orderId}`, {
+            const response = await fetch(`${BaseUrl}/payment-status/${orderId}`, {
               method: "GET",
               headers:{'Authorisation':token}
             });

@@ -1,9 +1,9 @@
-
+const BaseUrl="http://15.206.163.80"
   //  download csv file button functionality
 document.getElementById('downloadBtn').addEventListener('click',(event)=>{
     event.preventDefault() 
     console.log("Download Button Active")
-    axios.get('http://localhost:5050/download',{
+    axios.get(`${BaseUrl}/download`,{
     headers:{'Authorisation':token},
     // responseType:'blob'
 })
@@ -41,7 +41,7 @@ function logOut(){
   userLogdiv.innerHTML=`<h3>User Logged In: ${userLogged}</h3>`
   userLogdiv.appendChild(LogOutBtn)
   LogOutBtn.addEventListener('click',()=>{
-    axios.get('http://localhost:5050/logOut')
+    axios.get(`${BaseUrl}/logOut`)
     .then(response=>{
       alert("Logged Out Succesfully")
       localStorage.removeItem('token')
@@ -72,7 +72,7 @@ function showExpanses(e,page){
 // delete functionality
   expanseRow.querySelector('.deleteBtn').addEventListener('click',()=>{
   const token=localStorage.getItem('token')
-  axios.delete(`http://localhost:5050/deleteExpanse/${e.id}`,{headers:{'Authorisation':token}})
+  axios.delete(`${BaseUrl}/deleteExpanse/${e.id}`,{headers:{'Authorisation':token}})
   .then(response=>{
     console.log("deleted",response)
     expanseList.removeChild(expanseRow)
@@ -147,7 +147,7 @@ function getExpanse(page){
   const limit=limitDropdown.value
   const token = localStorage.getItem('token');
 
-  axios.get(`http://localhost:5050/getExpanse?page=${page}&limit=${limit}`,{headers:{'Authorisation':token}})
+  axios.get(`${BaseUrl}/getExpanse?page=${page}&limit=${limit}`,{headers:{'Authorisation':token}})
   .then(response=>{
     // console.log("getting the data on page",response)
     console.log("response data",response.data)
@@ -197,7 +197,7 @@ const expanseDetail={
   userId:1
 }
 console.log(expanseDetail)
-axios.post('http://localhost:5050/postExpanse',expanseDetail,{headers:{'Authorisation':token}})
+axios.post(`${BaseUrl}/postExpanse`,expanseDetail,{headers:{'Authorisation':token}})
 .then((response)=>{
     // console.log("response from backend",response.data)
     const newdata=response.data.newExpanse
