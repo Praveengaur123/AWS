@@ -34,7 +34,7 @@ exports.getPasswordLink=async(req,res)=>{
          to:reciever,
          subject:'Password Reset Link',
          htmlContent:`Click the link to <a href="http://localhost:5050/password/resetpassword/${id}">Reset Password</a>`
-       }).then(response=>console.log("email sent",response)).catch(err=>console.log("email not sent"))
+       }).then(response=>console.log("email sent",response)).catch(err=>console.log(err,"email not sent"))
     }
     res.json({email})
    }

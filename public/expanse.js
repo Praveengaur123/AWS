@@ -1,4 +1,4 @@
-const BaseUrl="http://13.235.75.213"
+var BaseUrl='http://13.235.75.213'
   //  download csv file button functionality
 document.getElementById('downloadBtn').addEventListener('click',(event)=>{
     event.preventDefault() 
@@ -75,15 +75,16 @@ function showExpanses(e,page){
   axios.delete(`${BaseUrl}/deleteExpanse/${e.id}`,{headers:{'Authorisation':token}})
   .then(response=>{
     console.log("deleted",response)
-    expanseList.removeChild(expanseRow)
+    expanseBody.removeChild(expanseRow)
     const expanseCount=document.querySelectorAll('.expanse-item').length
+    // console.log(expanseCount,"expanse count")
     if(expanseCount==0) {
     page=page-1
   };
-    // getExpanse(page)
+    getExpanse(page)
   })
   .catch((err)=>
-    console.log("Error in deleting",err.message))
+    console.log("Error in deleting",err))
 })
 
 }
@@ -197,6 +198,7 @@ const expanseDetail={
   userId:1
 }
 console.log(expanseDetail)
+const token=localStorage.getItem('token')
 axios.post(`${BaseUrl}/postExpanse`,expanseDetail,{headers:{'Authorisation':token}})
 .then((response)=>{
     // console.log("response from backend",response.data)

@@ -1,4 +1,4 @@
-const BaseUrl="http://13.235.75.213"
+
 // token to fetch for verification
 const token=localStorage.getItem('token')
 // html div to display

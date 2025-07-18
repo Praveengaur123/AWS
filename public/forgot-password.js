@@ -1,5 +1,5 @@
-const BaseUrl="http://13.235.75.213"
 
+const BaseUrl="http://13.235.75.213"
 const resetPasswordForm=document.getElementById('reset-password-form')
 resetPasswordForm.addEventListener('submit',(event)=>{
     event.preventDefault()
