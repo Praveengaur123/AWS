@@ -14,14 +14,16 @@
 
 </head>
 <body style="margin: 10px 10px 10px;" class="container">
-      
-    <div class="">
-            <p>Click below to open the checkout page in current tab</p>
+      <div>
+    <div class="container d-flex justify-content-right align-items-center">
+            <button id="downloadBtn" >Download Report</button>
+            </div>
+            <div class="container d-flex justify-content-end ">
             <button id="renderBtn">Buy Premium Membership</button>
-            <button id="downloadBtn">Download Report</button>
+            </div>
         </div>
         <div id="user-name"></div>
-    <form action="/expanse" method="post" id="expanse-form">
+    <form action="/expanse" method="post" id="expanse-form" class="form-control form-group">
         <label for="expanseAmount">Choose Expanse Amount</label>
         <input type="number" name="" id="expanseAmount">
         <label for="description">Choose description</label>
@@ -36,13 +38,29 @@
         </select>
         <label for ="Notes">Notes</label>
         <input id="notes" type="text">
-        <button type="submit" id="addExpanses">Add Expanses</button>
+        <button type="submit" id="addExpanses" class="btn-success">Add Expanses</button>
     </form>
     <div id="premiumUser">
 
     </div>
-    <div id="expanse-list">
+    <div id="expanse-list" >
         <h2>Expanses</h2>
+        <div id="expanse-item">
+               <table class="table">
+            <thead>
+                <tr>
+                    <th>Amount</th>
+                    <th>Description</th>
+                    <th>Category</th>
+                    <th>Notes</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody id="expanse-body">
+                <!-- Expenses will be listed here -->
+            </tbody>
+        </table>
+        </div>
     </div>
     <div id="dynamicPage" style="border: 10px; margin: 5px 0px;">
         <label for="">Expanse Per Page</label>
@@ -58,7 +76,7 @@
 
     </div>
    <div id="leaderBoard">
-
+    
    </div>
    <div id="detailedExpanseSection" class="container mt-5">
     

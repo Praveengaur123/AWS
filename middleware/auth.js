@@ -16,8 +16,7 @@ exports.authenticate=(req,res,next)=>{
         
 
     } catch (error) {
-        console.log(error)
-        return res.status(401).json({success:false,message:'error authorization'})
+        console.log(error.message)
+        return res.status(401).json({success:false,message:'error authorization',redirectUrl:'/login'})
     }
-
 }

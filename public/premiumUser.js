@@ -1,4 +1,4 @@
-
+var BaseUrl="http://localhost:5050"
 // token to fetch for verification
 const token=localStorage.getItem('token')
 // html div to display
@@ -32,35 +32,46 @@ function showUser(){
 }
 // function to show leader
 function showLeader(){
-    axios.get('http://localhost:5050/leaderBoard')
+    axios.get(`${BaseUrl}/leaderBoard`)
         .then(response=>{
-            leaderBoard.innerHTML=`<h2>Leader Board</h2>`
+            leaderBoard.innerHTML=`<h2 style="color:chocolate">--> Leader Board <--</h2>`
             const l=response.data.leaderboard
             console.log(l)
+            const table=document.createElement('table')
+            const tbody=document.createElement('tbody')
+            table.classList='table'
+            table.innerHTML=`
+            <thead><tr>
+            <th>Rank</th>
+            <th>Name</th>
+            <th>Total Expanse</th>
+            </tr></thead>
+            `;
             for(let i=0;i<l.length;i++){
-               const row=document.createElement('tr')
+                const row=document.createElement('tr')
                 row.innerHTML+=`
+                
                 <td>${i+1}</td>
-                <td>=></td>
-                <td>Name: ${l[i].name}</td>
-                <td>Total Expanses: ${l[i].totalExpanses}</td>`;
-                leaderBoard.appendChild(row)
+                <td>${l[i].name}</td>
+                <td>${l[i].totalExpanses} Rs</td>
+               `;
+                tbody.appendChild(row)
             }
+            table.appendChild(tbody)
+            leaderBoard.appendChild(table)
         })
         .catch(err=>{
             leaderBoard.innerHTML= `<h4>Error while fetching leaderboard`;
-            console.log("error from backend",err.message)
+            console.log("error from backend",err)
         })
 }
-
-
 // page loaded when refreshed
 document.addEventListener('DOMContentLoaded',(event)=>{
 event.preventDefault()
 
 console.log("premium user data to fetch")
 // url to know the premium user
-axios.get('http://localhost:5050/premiumUser',{headers:{'Authorisation':token}})
+axios.get(`${BaseUrl}/premiumUser`,{headers:{'Authorisation':token}})
 .then(response=>{
     const premium=response.data.pUser
     if(premium.premiumUser==true){
@@ -76,7 +87,7 @@ axios.get('http://localhost:5050/premiumUser',{headers:{'Authorisation':token}})
 })
 // day, weekly and monthly expanses
 function expanses(){
-        axios.get('http://localhost:5050/getExpanse',{headers:{'Authorisation':token}})
+        axios.get(`${BaseUrl}/getExpanse`,{headers:{'Authorisation':token}})
         .then(response=>{
             const expanseData=response.data.AllExpanses
             console.log("expanse Data",expanseData)

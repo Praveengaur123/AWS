@@ -136,10 +136,10 @@ try {
     }
     else{
         console.log("Bad Request")
-        return res.status(401).json({message:"Unauthorized"})
+        res.status(401).json({message:"Not authorised"})
     }
 } catch (error) {
-    console.log("while downloading",error.message)
+    console.log("while downloading from backend",error.message)
     res.status(500).json({fileUrl:'',success:false,error:error})
 }
 }

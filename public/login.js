@@ -1,5 +1,5 @@
 // Log In functionality
-var baseUrl="http://13.200.229.116";
+var baseUrl="http://localhost:5050";
 const login=document.getElementById('login')
 login.addEventListener('submit',(event)=>{
     event.preventDefault()
@@ -13,7 +13,12 @@ login.addEventListener('submit',(event)=>{
         console.log(response.data)
         localStorage.setItem('token',response.data.token)
         localStorage.setItem('email',loginEmail)
+        if(response.data.token==null){
+            console.log("jwt must be provided")
+        }
+        else{
         window.location.href=response.data.redirectUrl
+        }
     })
     .catch(err=>{
         login.innerHTML+=`<h1>${loginEmail} Logged In unSuccessfull</h1>`

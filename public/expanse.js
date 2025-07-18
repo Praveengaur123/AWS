@@ -1,3 +1,4 @@
+
   //  download csv file button functionality
 document.getElementById('downloadBtn').addEventListener('click',(event)=>{
     event.preventDefault() 
@@ -7,7 +8,7 @@ document.getElementById('downloadBtn').addEventListener('click',(event)=>{
     // responseType:'blob'
 })
     .then(response=>{
-        console.log(response)
+        console.log("download button ",response)
         if(response.status===200){
         // const url = window.URL.createObjectURL(new Blob([response.data]));
         const a=document.createElement('a')
@@ -18,11 +19,13 @@ document.getElementById('downloadBtn').addEventListener('click',(event)=>{
         a.remove()
       }
       if(response.status===401){
-        console.log("Unauthorised")
+        console.log("Unauthorised ener")
+        
       }
     })
     .catch(err=>{
-        console.log("Error while downloading",err)
+        alert("Buy Premium Membership")
+        // console.log("Error while downloading",err)
     })
 })
 
@@ -41,6 +44,8 @@ function logOut(){
     axios.get('http://localhost:5050/logOut')
     .then(response=>{
       alert("Logged Out Succesfully")
+      localStorage.removeItem('token')
+      localStorage.removeItem('email')
       window.location.href=response.data.redirectUrl
     })
     .catch(err=>{
@@ -52,14 +57,18 @@ function logOut(){
 
 function showExpanses(e,page){
     const expanseList=document.getElementById('expanse-list')
-    const expanseRow=document.createElement('div')
-    expanseRow.classList='expanse-item'
-    expanseList.appendChild(expanseRow).innerHTML+=`
-            
-            <span>${e.amount}-${e.description}-${e.category}-${e.notes}</span>
-            <button type='submit' data-id='e.id' class='deleteBtn'>Delete Expanses</button>
-            `;
-            
+    const expanseBody=document.getElementById('expanse-body')
+    const expanseRow=document.createElement('tr')
+    
+    expanseRow.innerHTML+=`
+            <td>${e.amount}</td>
+            <td>${e.description}</td>
+            <td>${e.category}</td>
+            <td>${e.notes}</td>
+            <td>
+            <button type='submit' data-id='e.id' class='deleteBtn btn-danger'>Delete Expanses</button>
+            </td>`;
+            expanseBody.appendChild(expanseRow)
 // delete functionality
   expanseRow.querySelector('.deleteBtn').addEventListener('click',()=>{
   const token=localStorage.getItem('token')
@@ -71,7 +80,7 @@ function showExpanses(e,page){
     if(expanseCount==0) {
     page=page-1
   };
-    getExpanse(page)
+    // getExpanse(page)
   })
   .catch((err)=>
     console.log("Error in deleting",err.message))
@@ -83,44 +92,13 @@ function showExpanses(e,page){
 document.addEventListener('DOMContentLoaded',(event)=>{
 event.preventDefault()
 // calling logout function
-logOut();
-const page=1;
-const limitDropdown=document.getElementById('dynamicPagination')
-const limit=limitDropdown.value
-console.log("value for Dynamic Page",limit)
-getExpanse(page,limit)
-limitDropdown.addEventListener('change',()=>{
-  const limit=limitDropdown.value
-  getExpanse(page,limit)
-
-})
-
-// post request functionality for expanse form post request
-const expanseForm=document.getElementById('expanse-form')
-expanseForm.addEventListener('submit',(event)=>{
-event.preventDefault()
-
-const expanseDetail={
-  expanseAmount:event.target.expanseAmount.value,
-  description:event.target.description.value,
-  category:event.target.category.value,
-  notes:event.target.notes.value,
-  userId:1
-}
 const token=localStorage.getItem('token')
-console.log(expanseDetail)
-axios.post('http://localhost:5050/postExpanse',expanseDetail,{headers:{'Authorisation':token}})
-.then((response)=>{
-    // console.log("response from backend",response.data)
-    const newdata=response.data.newExpanse
-            console.log("rte",newdata)
-            showExpanses(newdata)
-            expanseForm.reset()
-            getExpanse(page)
-})
-.catch(err=>console.log("error from backend",err))
-
-})
+if(token===null){
+  window.location.href='/login'
+}
+else{
+  displayeExpanse()
+}
 
 })
 const pagination=document.getElementById('pagination')
@@ -171,18 +149,65 @@ function getExpanse(page){
 
   axios.get(`http://localhost:5050/getExpanse?page=${page}&limit=${limit}`,{headers:{'Authorisation':token}})
   .then(response=>{
-    console.log("getting the data on page",response)
-
+    // console.log("getting the data on page",response)
+    console.log("response data",response.data)
     const ex=response.data.AllExpanses
     
-    const expList = document.getElementById('expanse-list');
+    const expList = document.getElementById('expanse-body');
     expList.innerHTML = ''; // Clear old data
     if(ex.length==0){
       expList.innerHTML = `<h5 style="color:firebrick;"> No Expenses Added Yet</h5>`
     }
     // render new expanses
-    ex.forEach(exp => showExpanses(exp,page));
+    
+    ex.forEach(exp => 
+      {
+        showExpanses(exp,page)
+        
+      }
+    );
     showPagination(response.data);
   })
   .catch(err=>console.log("error in pagination while getting products",err.message))
+}
+// functionality to display expanse page
+function displayeExpanse(){
+  logOut();
+const page=1;
+const limitDropdown=document.getElementById('dynamicPagination')
+const limit=limitDropdown.value
+console.log("value for Dynamic Page",limit)
+getExpanse(page,limit)
+limitDropdown.addEventListener('change',()=>{
+  const limit=limitDropdown.value
+  getExpanse(page,limit)
+
+})
+
+// post request functionality for expanse form post request
+const expanseForm=document.getElementById('expanse-form')
+expanseForm.addEventListener('submit',(event)=>{
+event.preventDefault()
+
+const expanseDetail={
+  expanseAmount:event.target.expanseAmount.value,
+  description:event.target.description.value,
+  category:event.target.category.value,
+  notes:event.target.notes.value,
+  userId:1
+}
+console.log(expanseDetail)
+axios.post('http://localhost:5050/postExpanse',expanseDetail,{headers:{'Authorisation':token}})
+.then((response)=>{
+    // console.log("response from backend",response.data)
+    const newdata=response.data.newExpanse
+            console.log("rte",newdata)
+            showExpanses(newdata)
+            expanseForm.reset()
+            getExpanse(page)
+})
+.catch(err=>console.log("error from backend",err))
+
+})
+
 }
